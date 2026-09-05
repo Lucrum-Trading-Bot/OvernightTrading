@@ -27,7 +27,7 @@ def run_gui(run_analysis):
     ttk.Label(frame, text="Start date").grid(row=2, column=0, sticky="w", pady=5)
     ttk.Label(frame, text="End date").grid(row=3, column=0, sticky="w", pady=5)
     ttk.Label(frame, text="Initial capital").grid(row=4, column=0, sticky="w", pady=5)
-    ttk.Label(frame, text="Round-trip transaction cost (%)").grid(
+    ttk.Label(frame, text="Transaction cost (%)").grid(
         row=5,
         column=0,
         sticky="w",

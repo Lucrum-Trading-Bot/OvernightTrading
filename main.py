@@ -53,7 +53,10 @@ def run_analysis(parameters):
         parameters["transaction_cost"],
     )
 
-    buy_and_hold_returns = calculate_buy_and_hold_returns(data)
+    buy_and_hold_returns = calculate_buy_and_hold_returns(
+        data,
+        parameters["transaction_cost"],
+    )
 
     initial_capital = parameters["initial_capital"]
 
