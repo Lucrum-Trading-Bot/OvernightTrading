@@ -9,5 +9,4 @@ def calculate_overnight_returns(data, transaction_cost=0):
 
     returns = returns.dropna()
     returns.name = "overnight_return"
-
     return returns

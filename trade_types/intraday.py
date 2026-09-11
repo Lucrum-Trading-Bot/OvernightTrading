@@ -8,5 +8,4 @@ def calculate_intraday_returns(data, transaction_cost=0):
     )
 
     returns.name = "intraday_return"
-
     return returns

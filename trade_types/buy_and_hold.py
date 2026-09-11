@@ -15,5 +15,4 @@ def calculate_buy_and_hold_returns(data, transaction_cost=0):
     )
 
     returns.name = "buy_and_hold_return"
-
     return returns

@@ -10,12 +10,10 @@ def show_results(results):
         initial_capital
         * (1 + results["overnight_returns"]).cumprod()
     )
-
     intraday_values = (
         initial_capital
         * (1 + results["intraday_returns"]).cumprod()
     )
-
     buy_and_hold_values = (
         initial_capital
         * (1 + results["buy_and_hold_returns"]).cumprod()
@@ -23,11 +21,13 @@ def show_results(results):
 
     figure, ax = plt.subplots(figsize=(10, 7))
 
-    overnight_line, = ax.plot(overnight_values)
-    intraday_line, = ax.plot(intraday_values)
-    buy_and_hold_line, = ax.plot(buy_and_hold_values)
+    (overnight_line,) = ax.plot(overnight_values)
+    (intraday_line,) = ax.plot(intraday_values)
+    (buy_and_hold_line,) = ax.plot(buy_and_hold_values)
 
-    overnight_returns, intraday_returns = results["overnight_returns"].align(
+    overnight_returns, intraday_returns = results[
+        "overnight_returns"
+    ].align(
         results["intraday_returns"],
         join="inner",
     )
@@ -43,15 +43,14 @@ def show_results(results):
         [marker_y] * overnight_better.sum(),
         marker="|",
         s=60,
-        color="blue",
+        color=overnight_line.get_color(),
     )
-
     ax.scatter(
         intraday_returns.index[intraday_better],
         [marker_y] * intraday_better.sum(),
         marker="|",
         s=60,
-        color="red",
+        color=intraday_line.get_color(),
     )
 
     for date in results["earnings_dates"]:
@@ -65,9 +64,9 @@ def show_results(results):
 
     ax.set_title(
         f"{results['ticker']} | "
-        f"{results['start_date'].date()} to {results['end_date'].date()}"
+        f"{results['start_date'].date()} to "
+        f"{results['end_date'].date()}"
     )
-
     ax.set_ylabel("Portfolio value")
     ax.grid(alpha=0.3)
 
@@ -92,43 +91,43 @@ def show_results(results):
             "Average return",
             f"{overnight['average_return']:.2%}",
             f"{intraday['average_return']:.2%}",
-            f"{buy_and_hold['average_return']:.2%}",
+            "-",
         ],
         [
             "Median return",
             f"{overnight['median_return']:.2%}",
             f"{intraday['median_return']:.2%}",
-            f"{buy_and_hold['median_return']:.2%}",
+            "-",
         ],
         [
             "Best return",
             f"{overnight['best_return']:.2%}",
             f"{intraday['best_return']:.2%}",
-            f"{buy_and_hold['best_return']:.2%}",
+            "-",
         ],
         [
             "Worst return",
             f"{overnight['worst_return']:.2%}",
             f"{intraday['worst_return']:.2%}",
-            f"{buy_and_hold['worst_return']:.2%}",
+            "-",
         ],
         [
             "Wins",
             overnight["wins"],
             intraday["wins"],
-            buy_and_hold["wins"],
+            "-",
         ],
         [
             "Losses",
             overnight["losses"],
             intraday["losses"],
-            buy_and_hold["losses"],
+            "-",
         ],
         [
             "Win rate",
             f"{overnight['win_rate']:.2%}",
             f"{intraday['win_rate']:.2%}",
-            f"{buy_and_hold['win_rate']:.2%}",
+            "-",
         ],
         [
             "Observations",
@@ -146,7 +145,12 @@ def show_results(results):
 
     table = ax.table(
         cellText=table_data,
-        colLabels=["Metric", "Overnight", "Intraday", "Buy and hold"],
+        colLabels=[
+            "Metric",
+            "Overnight",
+            "Intraday",
+            "Buy and hold",
+        ],
         cellLoc="center",
         bbox=[0, -0.78, 1, 0.62],
     )
@@ -155,7 +159,6 @@ def show_results(results):
     table.set_fontsize(9)
 
     cells = table.get_celld()
-
     cells[(0, 0)].set_text_props(weight="bold")
     cells[(0, 1)].set_text_props(
         weight="bold",
@@ -171,5 +174,4 @@ def show_results(results):
     )
 
     figure.subplots_adjust(bottom=0.45)
-
     plt.show(block=False)
